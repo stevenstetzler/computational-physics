@@ -157,13 +157,14 @@ void wolff_step(int lattice[size_x][size_y], int neighbors[size_x][size_y][num_n
 
             // printf("Trying point on border %d = (%d, %d)\n", curr_point, curr_x, curr_y);
             sigma_xy = lattice[curr_x][curr_y];
-            /*
+           
+            /* 
             left = curr_x - 1;
             right = curr_x + 1;
             top = curr_y - 1;
             bottom = curr_y + 1;
 
-        
+            
             if (left % size_x < 0) {
                 left = left % size_x + size_x;
             } else {
@@ -189,7 +190,7 @@ void wolff_step(int lattice[size_x][size_y], int neighbors[size_x][size_y][num_n
             } 
             */
             // printf("Candidate Points: (%d, %d), (%d, %d), (%d, %d), (%d, %d)\n", left, curr_y, right, curr_y, curr_x, top, curr_x, bottom);
-
+            
             left = neighbors[curr_x][curr_y][0];
             right = neighbors[curr_x][curr_y][1];
             bottom = neighbors[curr_x][curr_y][2];
@@ -239,9 +240,6 @@ void wolff_step(int lattice[size_x][size_y], int neighbors[size_x][size_y][num_n
     }
 
     for (i = 0; i < size_x * size_y; i++) {
-//        y_flip = C[i] % size_x;
-//        x_flip = (C[i] - y_flip) / size_x;
-
         if (C[i] == 1) {
             y_flip = i % size_x;
             x_flip = (i - y_flip) / size_x;
@@ -262,7 +260,7 @@ void sweep_wolff(int lattice[size_x][size_y], int neighbors[size_x][size_y][num_
 }
 
 void thermalize(int lattice[size_x][size_y], int neighbors[size_x][size_y][num_nn], double J, double beta) {
-    int num_sweeps = 1;
+    int num_sweeps = 20;
     int i;
     for (i = 0; i < num_sweeps; i++) {
         sweep_wolff(lattice, neighbors, J, beta);
@@ -279,8 +277,8 @@ void wolff_simulation(int lattice[size_x][size_y], int neighbors[size_x][size_y]
     }
 
     double beta;
-    int num_snapshots = 10;
-    int num_sweeps = 1;
+    int num_snapshots = 200;
+    int num_sweeps = 10;
 
     double avg_e, avg_e2, e;
 
@@ -340,8 +338,7 @@ void print_lattice(int lattice[size_x][size_y]) {
 }
 
 int main() {
-    //srand(time(NULL));
-    srand(0);
+    srand(time(NULL));
 
     int lattice[size_x][size_y];
     int neighbors[size_x][size_y][num_nn];
@@ -349,8 +346,5 @@ int main() {
     initialize_lattice(lattice);   
     initialize_neighbors(neighbors);
 
-    //print_lattice(lattice);
     wolff_simulation(lattice, neighbors, 1, 0.01, 5, 125);
-//    wolff_step(lattice, neighbors, 0, 0, 1, 1);
-    //print_lattice(lattice);
 }
