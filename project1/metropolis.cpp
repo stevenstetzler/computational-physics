@@ -150,8 +150,6 @@ void metropolis_simulation(int lattice[size_x][size_y], double J, double min_T, 
     double avg_e, avg_e2, e;
 
     for (int i = 0; i < num_T; i++) {
-        printf("> %0.2f%% done       \r", 100. * (double) i / num_T);
-        fflush(stdout);
 
         beta = 1. / Ts[i];
 
@@ -168,6 +166,8 @@ void metropolis_simulation(int lattice[size_x][size_y], double J, double min_T, 
             
             for (int k = 0; k < num_sweeps; k++) {
                 sweep_metropolis(lattice, J, beta);
+                printf("> %0.2f%% done       \r", 100. * (double) (i * num_sweeps * num_snapshots + j * num_sweeps + k) / (num_T * num_snapshots * num_sweeps));
+                fflush(stdout);
             }
         }
         
