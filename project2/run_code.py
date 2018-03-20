@@ -78,7 +78,7 @@ def computer():
 
     Ts = np.linspace(2, 3, num_T)
 
-    for exec_file in exec_files[0:1]:
+    for exec_file in exec_files:
         L = exec_file.split("_")[-1]
 
         for i in range(num_runs):
@@ -97,7 +97,8 @@ def computer():
             
             #print(T_low, T_high)
             
-            options = ["./{}".format(exec_file)]
+            options = ['srun']
+            options.append(exec_file)
             options.append(str(T_low))
             options.append(str(T_high))
 
@@ -114,6 +115,8 @@ def computer():
             options.append(">>")
 
             options.append("crit_L_{0}_T_{1}_{2}.out".format(L, T_low, T_high))
+
+            options.append("&")
 
             run_command = " ".join(options)
 
