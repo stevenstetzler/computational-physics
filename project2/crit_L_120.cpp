@@ -12,8 +12,8 @@ const int size_y = 120;
 const int num_nn = 4;
 
 const int num_therm_sweeps = 10000;
-const int num_sweeps = 100;
-const int num_snapshots = 1000;
+const int num_sweeps = 150;
+const int num_snapshots = 10000;
 
 long num_accepted = 0;
 
