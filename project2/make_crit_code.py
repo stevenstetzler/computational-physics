@@ -1,3 +1,5 @@
+import argparse
+
 def modify_template(filename, size_x, size_y, outname):
     with open(filename, 'r') as in_file:
         lines = in_file.readlines()
@@ -12,8 +14,15 @@ def modify_template(filename, size_x, size_y, outname):
                 out_file.write(line)
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("template_file")
+
+    args = parser.parse_args()
+
+    template = args.template_file
+
     for L in [30, 60, 120, 240, 360]:
-        modify_template('template.cpp', str(L), str(L), 'crit_L_{0}.cpp'.format(L))
+        modify_template(template, str(L), str(L), 'crit_L_{0}.cpp'.format(L))
 
 if __name__ == '__main__':
     main()
