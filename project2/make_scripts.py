@@ -7,17 +7,17 @@ def slurm():
     for L in [30, 60, 120, 240, 360]:
         header_lines = ['#!/bin/bash']
 
-        out_file = '#SBATCH --output=crit-L-{0}-{1:0.1f}-{2:0.1f}.out'
+        out_file = '#SBATCH --output=crit-L-{0}-{1:0.2f}-{2:0.2f}.out'
 
-        job_name = '#SBATCH --job-name="cL{0}-{1:0.1f}-{2:0.1f}"'
+        job_name = '#SBATCH --job-name="cL{0}-{1:0.2f}-{2:0.2f}"'
 
-        script_file = 'crit-L-{0}-{1:0.1f}-{2:0.1f}.sh'
+        script_file = 'crit-L-{0}-{1:0.2f}-{2:0.2f}.sh'
 
         run_command = './crit_L_{0} {1} {2} {3} {4}'
 
-        filename = 'crit-L-{0}-{1:0.1f}-{2:0.1f}.txt'
+        filename = 'crit-L-{0}-{1:0.2f}-{2:0.2f}.txt'
 
-        num_scripts = 10
+        num_scripts = 15
         #num_T = 125
         num_T = 200
         Ts = np.linspace(1.26918531, 3.26918531, num_T)
@@ -40,7 +40,7 @@ def slurm():
 
             T_high = Ts[high_idx]
             
-            print(T_low, T_high)
+            #print(T_low, T_high)
 
             script_lines = [l for l in header_lines]
             script_lines.append(out_file.format(L, T_low, T_high))
@@ -61,8 +61,8 @@ def slurm():
         
         #print(scripts)
         procs = []
-        #for script in scripts:
-        #    procs.append(subprocess.Popen(['sbatch', script]))
+        for script in scripts:
+            procs.append(subprocess.Popen(['sbatch', script]))
 
 def compile(scripts):
     procs = []

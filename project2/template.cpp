@@ -13,7 +13,7 @@ const int num_nn = 4;
 
 const int num_therm_sweeps = 10000;
 const int num_sweeps = 150;
-const int num_snapshots = 10000;
+const int num_snapshots = 100000;
 
 long num_accepted = 0;
 
