@@ -4,12 +4,18 @@ import numpy as np
 from glob import glob
 
 def slurm():
-    for L in [30, 60, 120, 240, 360]:
+    for L in [360]: #30, 60, 120, 240, 360]:
         header_lines = ['#!/bin/bash']
 
         out_file = '#SBATCH --output=crit-L-{0}-{1:0.2f}-{2:0.2f}.out'
 
         job_name = '#SBATCH --job-name="cL{0}-{1:0.2f}-{2:0.2f}"'
+
+        hosts = ['hermes[1-4]', 'trillian[1-3]', 'artemis[1-7]', 'qdata[1-8]', 'granger[1-8]', 'nibbler[1-4]', 'slurm[1-5]']
+
+        exclude_list = [e for e in hosts if 'granger' not in e]
+
+        exclude_line = "#SBATCH --exclude={0}".format(",".join(exclude_list))
 
         script_file = 'crit-L-{0}-{1:0.2f}-{2:0.2f}.sh'
 
@@ -17,7 +23,7 @@ def slurm():
 
         filename = 'crit-L-{0}-{1:0.2f}-{2:0.2f}.txt'
 
-        num_scripts = 15
+        num_scripts = 40
         #num_T = 125
         num_T = 200
         Ts = np.linspace(1.26918531, 3.26918531, num_T)
@@ -46,6 +52,8 @@ def slurm():
             script_lines.append(out_file.format(L, T_low, T_high))
 
             script_lines.append(job_name.format(L, T_low, T_high))
+
+            script_lines.append(exclude_line)
 
             if high_idx != -1:
                 script_lines.append(run_command.format(L, T_low, T_high, len(Ts[low_idx:high_idx + 1]), filename.format(L, T_low, T_high)))
